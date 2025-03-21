@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: lightslategray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 600px;
+        }
+        input, button {
+            width: 85%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 40%;
+            padding-top: 10px;
+            background: slategrey;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkslategray;
+        }
+        a {
+            display: block;
+            margin-top: 10px;
+            color: darkslategray;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #message {
+            font-weight: bold;
+            margin-top: 10px;
+            color: red;
+        }
+        .checkbox-container {
+            flex-direction: row;
+            justify-content: center;
+            font-size: 14px;
+            width: 95%;
+        }
+        .checkbox-container span {
+            color: #777;
+        }
+        .checkbox-container h4 {
+            padding-bottom: 0;
+        }
+        .checkbox-container li {
+            font-weight: bolder;
+            font-style: italic;
+            list-style-type: none;
+        }
+        .valid {
+            color: green;
+        }
+        .invalid {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required oninput="validatePassword()">
+
+    <div class="checkbox-container">
+        <ul>
+            <h4>Password must contain at least:</h4>
+            <li id="length" class="invalid">12 characters</li>
+            <li id="number" class="invalid">One number</li>
+            <li id="special" class="invalid">One special character</li>
+            <li id="uppercase" class="invalid">One uppercase letter</li>
+            <li id="lowercase" class="invalid">One lowercase letter</li>
+        </ul>
+    </div>
+
+    <button onclick="register()">Register</button>
+    <a href="http://localhost:8080/login">Already have an account? Login here</a>
+    <p id="message"></p>
+</div>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById('password').value;
+        const lengthValid = password.length >= 12;
+        const numberValid = /[0-9]/.test(password);
+        const specialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const uppercaseValid = /[A-Z]/.test(password);
+        const lowercaseValid = /[a-z]/.test(password);
+        document.getElementById('length').className = lengthValid ? 'valid' : 'invalid';
+        document.getElementById('number').className = numberValid ? 'valid' : 'invalid';
+        document.getElementById('special').className = specialValid ? 'valid' : 'invalid';
+        document.getElementById('uppercase').className = uppercaseValid ? 'valid' : 'invalid';
+        document.getElementById('lowercase').className = lowercaseValid ? 'valid' : 'invalid';
+    }
+
+    function register() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const formBody = `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+        fetch('http://localhost:8080/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formBody
+        })
+            .then(response => response.text().then(text => ({ status: response.status, text })))
+            .then(({ status, text }) => {
+                const message = document.getElementById('message');
+                message.innerText = text;
+                message.style.color = status === 201 ? 'green' : 'red';
+                if (status === 201) {
+                    setTimeout(() => {
+                        window.location.replace('http://localhost:8080/login');
+                    }, 2000);
+                } else if (status === 429) {
+                    message.innerText = "Too many register attempts, please wait 1 minute";
+                    message.style.color = 'red';
+                } else {
+                    message.innerText = text || "An unexpected error occurred";
+                    message.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const message = document.getElementById('message');
+                message.innerText = "An error occurred while trying to register account";
+                message.style.color = 'red';
+            });
+    }
+</script>
+</body>
+</html>

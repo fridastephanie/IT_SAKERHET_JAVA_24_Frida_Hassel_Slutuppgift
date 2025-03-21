@@ -1,0 +1,17 @@
+2025-03-21 18:23:54 [main] INFO  s.g.MessageServerApplication - Starting MessageServerApplication using Java 21.0.6 with PID 24364 (C:\Users\Frida\OneDrive\Desktop\Skoluppgifter\IT-säkerhet\github_slutuppgift\IT_SAKERHET_JAVA_24_Frida_Hassel_Slutuppgift\build\classes\java\main started by Frida in C:\Users\Frida\OneDrive\Desktop\Skoluppgifter\IT-säkerhet\github_slutuppgift\IT_SAKERHET_JAVA_24_Frida_Hassel_Slutuppgift)
+2025-03-21 18:23:54 [main] INFO  s.g.MessageServerApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - User user1@user.se sent a message to user2@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - Message sent successfully by: user1@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - User user2@user.se sent a message to user1@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - Message sent successfully by: user2@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - User user1@user.se sent a message to user2@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - Message sent successfully by: user1@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - User user2@user.se sent a message to user1@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - Message sent successfully by: user2@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - User user1@user.se sent a message to user2@user.se
+2025-03-21 18:23:58 [main] INFO  se.gritacademy.service.UserService - Message sent successfully by: user1@user.se
+2025-03-21 18:23:59 [main] INFO  s.g.MessageServerApplication - Started MessageServerApplication in 5.588 seconds (process running for 6.896)
+2025-03-21 18:24:13 [http-nio-8080-exec-4] INFO  se.gritacademy.service.AuthService - Successful login: user1@user.se
+2025-03-21 18:24:15 [http-nio-8080-exec-7] INFO  se.gritacademy.service.UserService - User list requested by: user1@user.se
+2025-03-21 18:24:15 [http-nio-8080-exec-6] INFO  se.gritacademy.service.UserService - Message list requested by: user1@user.se
+2025-03-21 18:24:19 [http-nio-8080-exec-8] INFO  se.gritacademy.service.AuthService - User logged out

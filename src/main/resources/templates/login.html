@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: lightslategray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 600px;
+        }
+        input, button {
+            width: 85%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 40%;
+            background: slategrey;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkslategray;
+        }
+        a {
+            display: block;
+            margin-top: 10px;
+            color: darkslategray;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #message {
+            font-weight: bold;
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <a href="http://localhost:8080/register">Need to register? Sign up here</a>
+        <p id="message"></p>
+    </div>
+    <script>
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            fetch('http://localhost:8080/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+                .then(response => {
+                    return response.text().then(text => ({ status: response.status, text }));
+                })
+                .then(({ status, text }) => {
+                    const message = document.getElementById('message');
+                    if (status === 200) {
+                        message.innerText = "Login successful!";
+                        message.style.color = 'green';
+                        localStorage.setItem('jwt', text);
+                        const payload = JSON.parse(atob(text.split('.')[1]));
+                        const role = payload.role;
+                        setTimeout(() => {
+                            if (role === 'admin') {
+                                window.location.replace('http://localhost:8080/admin');
+                            } else {
+                                window.location.replace('http://localhost:8080/user/messages');
+                            }
+                        }, 2000);
+                    } else if (status === 429) {
+                        message.innerText = "Too many login attempts, please wait 1 minute";
+                        message.style.color = 'red';
+                    } else {
+                        message.innerText = text || "An unexpected error occurred";
+                        message.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const message = document.getElementById('message');
+                    message.innerText = "An error occurred while trying to log in";
+                    message.style.color = 'red';
+                });
+        }
+    </script>
+</body>
+</html>
