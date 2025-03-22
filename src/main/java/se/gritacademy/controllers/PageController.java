@@ -16,7 +16,7 @@ public class PageController {
         return "login";
     }
 
-    @GetMapping({"/user/messages", "/user/users"})
+    @GetMapping({"/user"})
     public String showUserPage() {
         return "user";
     }
